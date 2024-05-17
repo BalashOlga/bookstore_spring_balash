@@ -1,0 +1,25 @@
+<?xml version ="1.0" encoding="UTF-8" ?>
+<Configuration status="warn">
+    <Properties>
+<!--        <property name="LOG_DIR"><${env:CATALINA_HOME}\logs></property>-->
+        <property name="pattern_console">%d{DEFAULT} [%t] %-5level %logger{36} - %msg%n</property>
+        <property name="pattern_file">%d{DEFAULT} [%t] %-5level %logger{36} - %msg%n</property>
+    </Properties>
+
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${pattern_console}"/>
+        </Console>
+        <File name="File1" fileName="${env:CATALINA_HOME}\logs\text.log" bufferedIO="true">
+            <PatternLayout pattern="${pattern_file}"/>
+        </File>
+    </Appenders>
+
+    <Loggers>
+        <Root level="trace">
+            <AppenderRef ref="File1" level="trace"/>
+            <AppenderRef ref="Console" level="trace"/>
+        </Root>
+    </Loggers>
+
+</Configuration>
