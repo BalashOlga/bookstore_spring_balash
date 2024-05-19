@@ -29,6 +29,7 @@ public class ConnectionManagerImpl implements ConnectionManager {
         this.user = configurationManager.getProperty("db.user");
         this.password = configurationManager.getProperty("db.password");
         this.poolsize = Integer.valueOf(configurationManager.getProperty("db.poolsize"));
+        setConnectionPool();
     }
 
     @Override
@@ -41,7 +42,6 @@ public class ConnectionManagerImpl implements ConnectionManager {
         connectionPool.destroyPool();
     }
 
-    @PostConstruct
     public void setConnectionPool() {
         this.connectionPool = new ConnectionPool(driver, url, user, password, poolsize);
     }
