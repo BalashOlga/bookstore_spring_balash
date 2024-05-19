@@ -22,6 +22,8 @@
         <lombok.version>1.18.32</lombok.version>
         <log4j2-slf4j.version>2.23.1</log4j2-slf4j.version>
         <jstl.version>2.0.0</jstl.version>
+        <spring-context.version>6.1.7</spring-context.version>
+        <jakarta.annotation.version>3.0.0</jakarta.annotation.version>
     </properties>
 
     <dependencies>
@@ -67,6 +69,18 @@
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
             <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring-context.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>jakarta.annotation</groupId>
+            <artifactId>jakarta.annotation-api</artifactId>
+            <version>${jakarta.annotation.version}</version>
         </dependency>
     </dependencies>
 

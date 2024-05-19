@@ -1,33 +1,34 @@
+
 package com.belhard.bookstore.controller;
 
+import com.belhard.bookstore.AppConfiguration;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 @Slf4j
 @WebListener
 public class AppListner implements ServletContextListener {
-    private static CommandFactory commandFactory;
+    @Getter
+    private static AnnotationConfigApplicationContext context;
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         ServletContextListener.super.contextInitialized(sce);
-        commandFactory = CommandFactory.getInstance();
-        log.debug("CommandFactory has been initialized");
+        context = new AnnotationConfigApplicationContext(AppConfiguration.class);
+        log.info("The context is raised");
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
         ServletContextListener.super.contextDestroyed(sce);
-        if (commandFactory != null) {
-            commandFactory.shutdown();
+        if (context != null) {
+            context.close();
         }
-        log.debug("Stopping the application");
+        log.info("Stopping the application");
     }
 
-    public static CommandFactory getCommandFactory() {
-        return commandFactory;
-    }
 }

@@ -1,6 +1,6 @@
 package com.belhard.bookstore.service.impl;
 
-import com.belhard.bookstore.controller.impl.NotFoundException;
+import com.belhard.bookstore.controller.NotFoundException;
 import com.belhard.bookstore.data.dao.UserDao;
 import com.belhard.bookstore.data.entity.Role;
 import com.belhard.bookstore.data.entity.User;
