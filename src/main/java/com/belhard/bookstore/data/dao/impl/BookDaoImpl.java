@@ -6,6 +6,7 @@ import com.belhard.bookstore.data.entity.Book;
 import com.belhard.bookstore.data.entity.CoverType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
+@Repository
 public class BookDaoImpl implements BookDao {
     private static final String FIND_BY_ID = "SELECT books.id, books.author, books.isbn, books.year, books.cost, covertypes.name covertype  FROM books JOIN covertypes ON covertypes.id = books.covertypes_id WHERE books.id = ?  and books.deleted = false;";
     private static final String FIND_BY_ISBN = "SELECT books.id, books.author, books.isbn, books.year, books.cost, covertypes.name covertype  FROM books JOIN covertypes ON covertypes.id = books.covertypes_id WHERE books.isbn = ? and books.deleted = false;";

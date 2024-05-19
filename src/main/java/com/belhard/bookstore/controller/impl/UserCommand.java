@@ -6,9 +6,11 @@ import com.belhard.bookstore.service.dto.UserDtoWithoutPassword;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Controller;
 
 @Slf4j
 @RequiredArgsConstructor
+@Controller("user")
 public class UserCommand implements Command {
     private final UserService service;
 

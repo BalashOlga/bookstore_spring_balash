@@ -1,12 +1,12 @@
 package com.belhard.bookstore.controller;
 
-import com.belhard.bookstore.controller.impl.NotFoundException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,7 +14,7 @@ import java.io.PrintWriter;
 @Slf4j
 @WebServlet("/controller")
 public class Controller extends HttpServlet {
-    private CommandFactory commandFactory;
+    private AnnotationConfigApplicationContext appContext;
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         execute(req, resp);
@@ -27,8 +27,8 @@ public class Controller extends HttpServlet {
     private void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
         try {
             String command = req.getParameter("command");
-            CommandFactory commandFactory = AppListner.getCommandFactory();
-            Command commandInstance = commandFactory.getCommand(command);
+            AnnotationConfigApplicationContext appContext = AppListner.getContext();
+            Command commandInstance = appContext.getBean(command, Command.class);
             String page = commandInstance.execute(req);
             req.getRequestDispatcher(page).forward(req,resp);
         } catch (NumberFormatException e) {

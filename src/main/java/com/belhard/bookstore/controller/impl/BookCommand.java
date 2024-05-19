@@ -6,9 +6,11 @@ import com.belhard.bookstore.service.dto.BookDto;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Controller;
 
 @Slf4j
 @RequiredArgsConstructor
+@Controller("book")
 public class BookCommand implements Command {
 
     private final BookService service;

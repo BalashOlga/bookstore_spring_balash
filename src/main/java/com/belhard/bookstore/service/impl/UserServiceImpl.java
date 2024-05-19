@@ -1,6 +1,6 @@
 package com.belhard.bookstore.service.impl;
 
-import com.belhard.bookstore.controller.impl.NotFoundException;
+import com.belhard.bookstore.controller.NotFoundException;
 import com.belhard.bookstore.data.dao.UserDao;
 import com.belhard.bookstore.data.entity.Role;
 import com.belhard.bookstore.data.entity.User;
@@ -10,11 +10,13 @@ import com.belhard.bookstore.service.dto.UserDtoLogin;
 import com.belhard.bookstore.service.dto.UserDtoWithoutPassword;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
+@Service
 public class UserServiceImpl implements UserService {
     //    private static final Logger log = LogManager.getFormatterLogger(UserServiceImpl.class);
     private final UserDao userDao;
