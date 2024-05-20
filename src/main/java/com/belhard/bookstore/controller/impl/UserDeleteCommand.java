@@ -5,8 +5,10 @@ import com.belhard.bookstore.service.UserService;
 import com.belhard.bookstore.service.dto.UserDtoWithoutPassword;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
 
 @RequiredArgsConstructor
+@Controller("user_delete")
 public class UserDeleteCommand implements Command {
     private final UserService service;
 

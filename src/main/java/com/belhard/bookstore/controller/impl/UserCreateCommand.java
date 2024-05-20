@@ -5,8 +5,10 @@ import com.belhard.bookstore.service.UserService;
 import com.belhard.bookstore.service.dto.UserDtoLogin;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
 
 @RequiredArgsConstructor
+@Controller("user_create")
 public class UserCreateCommand implements Command {
     private final UserService service;
 

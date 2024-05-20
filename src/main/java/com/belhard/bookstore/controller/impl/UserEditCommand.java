@@ -5,8 +5,10 @@ import com.belhard.bookstore.service.UserService;
 import com.belhard.bookstore.service.dto.UserDto;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
 
 @RequiredArgsConstructor
+@Controller("user_edit")
 public class UserEditCommand implements Command {
     private final UserService service;
 

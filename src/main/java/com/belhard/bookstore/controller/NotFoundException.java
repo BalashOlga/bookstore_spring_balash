@@ -1,4 +1,4 @@
-package com.belhard.bookstore.controller.impl;
+package com.belhard.bookstore.controller;
 
 public class NotFoundException extends RuntimeException {
 

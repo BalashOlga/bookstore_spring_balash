@@ -6,6 +6,7 @@ import com.belhard.bookstore.data.entity.Role;
 import com.belhard.bookstore.data.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
+@Repository
 public class UserDaoImpl implements UserDao {
     private static final String FIND_BY_ID = "SELECT users.id, users.login, users.password, users.first_name, users.last_name, users.email, roles.name role FROM users JOIN roles ON users.roles_id = roles.id WHERE users.id = ? and users.deleted = false;";
     private static final String FIND_BY_EMAIL = "SELECT users.id, users.login, users.password, users.first_name, users.last_name, users.email, roles.name role FROM users JOIN roles ON users.roles_id = roles.id WHERE users.email = ? and users.deleted = false;";

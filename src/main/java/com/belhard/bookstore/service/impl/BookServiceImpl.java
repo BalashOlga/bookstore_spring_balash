@@ -1,20 +1,21 @@
 package com.belhard.bookstore.service.impl;
 
-import com.belhard.bookstore.controller.impl.NotFoundException;
+import com.belhard.bookstore.controller.NotFoundException;
 import com.belhard.bookstore.data.dao.BookDao;
 import com.belhard.bookstore.data.entity.Book;
 import com.belhard.bookstore.service.BookService;
 import com.belhard.bookstore.service.dto.BookDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
+@Service
 public class BookServiceImpl implements BookService {
-//    private static final Logger log = LogManager.getFormatterLogger(BookServiceImpl.class);
     private final BookDao bookDao;
 
     private BookDto toDto(Book book) {
