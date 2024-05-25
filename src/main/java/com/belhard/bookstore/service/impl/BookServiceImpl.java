@@ -3,6 +3,7 @@ package com.belhard.bookstore.service.impl;
 import com.belhard.bookstore.controller.NotFoundException;
 import com.belhard.bookstore.data.dao.BookDao;
 import com.belhard.bookstore.data.entity.Book;
+import com.belhard.bookstore.data.entity.CoverType;
 import com.belhard.bookstore.service.BookService;
 import com.belhard.bookstore.service.dto.BookDto;
 import lombok.RequiredArgsConstructor;
@@ -105,14 +106,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public BookDto create(BookDto bookDto) {
         log.debug("Calling create");
-
-        String isbnToBeCreate = bookDto.getIsbn();
-        Book byIsbn = bookDao.findByIsbn(isbnToBeCreate);
-
-        if (byIsbn != null) {
-            throw new NotFoundException("No valid isbn" + bookDto.getIsbn() + "! Book is not created!");
-        }
-
+        bookDto.setCoverType(CoverType.valueOf("HARD"));
         Book book = bookDao.create(toBook(bookDto));
 
         if (book == null){
