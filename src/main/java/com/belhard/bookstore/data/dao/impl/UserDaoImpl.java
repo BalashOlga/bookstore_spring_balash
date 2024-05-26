@@ -1,13 +1,11 @@
 package com.belhard.bookstore.data.dao.impl;
 
 import com.belhard.bookstore.data.dao.UserDao;
+import com.belhard.bookstore.data.dto.UserDto;
 import com.belhard.bookstore.data.entity.Role;
-import com.belhard.bookstore.data.entity.User;
 import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DataAccessException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -38,8 +36,8 @@ public class UserDaoImpl implements UserDao {
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Nullable
-    private User mapRow(ResultSet rs, int rowNum) throws SQLException {
-        User user = new User();
+    private UserDto mapRow(ResultSet rs, int rowNum) throws SQLException {
+        UserDto user = new UserDto();
         user.setId(rs.getLong("id"));
         user.setLogin(rs.getString("login"));
         user.setPassword(rs.getString("password"));
@@ -51,63 +49,54 @@ public class UserDaoImpl implements UserDao {
         return user;
     }
 
-    private BeanPropertySqlParameterSource getBeanPropertySql(User user) {
+    private BeanPropertySqlParameterSource getBeanPropertySql(UserDto user) {
         BeanPropertySqlParameterSource namedParameters = new BeanPropertySqlParameterSource(user);
         namedParameters.registerSqlType("role", Types.VARCHAR);
         return namedParameters;
     }
 
     @Override
-    public User findById(long id) {
-        try {
-            User user = jdbcTemplate.queryForObject(FIND_BY_ID, this::mapRow, id);
-            log.debug("Select FIND_BY_ID has been completed");
-            return user;
-        } catch (EmptyResultDataAccessException e) {
-            return null;
-        }
+    public UserDto findById(long id) {
+        UserDto user = jdbcTemplate.queryForObject(FIND_BY_ID, this::mapRow, id);
+        log.debug("Select FIND_BY_ID has been completed");
+        return user;
     }
 
     @Override
-    public User findByEmail(String email) {
-        try {
-            User user = jdbcTemplate.queryForObject(FIND_BY_EMAIL, this::mapRow, email);
-            log.debug("Select FIND_BY_EMAIL has been completed");
-            return user;
-        } catch (EmptyResultDataAccessException e) {
-            return null;
-        }
+    public UserDto findByEmail(String email) {
+        UserDto user = jdbcTemplate.queryForObject(FIND_BY_EMAIL, this::mapRow, email);
+        log.debug("Select FIND_BY_EMAIL has been completed");
+        return user;
     }
 
     @Override
-    public List<User> findAll() {
-        List<User> users = jdbcTemplate.query(FIND_ALL, this::mapRow);
+    public List<UserDto> findAll() {
+        List<UserDto> users = jdbcTemplate.query(FIND_ALL, this::mapRow);
         log.debug("Select FIND_ALL has been completed");
         return users;
     }
 
     @Override
-    public User findByLogin(String login) {
-        try {
-            User user = jdbcTemplate.queryForObject(FIND_BY_LOGIN, this::mapRow, login);
-            log.debug("Select FIND_BY_LOGIN has been completed");
-            return user;
-        } catch (EmptyResultDataAccessException e) {
-            return null;
-        }
+    public UserDto findByLogin(String login) {
+        UserDto user = jdbcTemplate.queryForObject(FIND_BY_LOGIN, this::mapRow, login);
+        log.debug("Select FIND_BY_ID has been completed");
+        return user;
     }
 
     @Override
-    public User create(User user) {
+    public UserDto create(UserDto user) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         BeanPropertySqlParameterSource namedParameters = getBeanPropertySql(user);
-        namedParameterJdbcTemplate.update(CREATE, namedParameters, keyHolder, new String[]{"id"});
+        int i = namedParameterJdbcTemplate.update(CREATE, namedParameters, keyHolder, new String[]{"id"});
         log.debug("Update CREATE has been completed");
-        return findById(keyHolder.getKey().longValue());
+        if (i>0) {
+            return findById(keyHolder.getKey().longValue());
+        }
+        return null;
     }
 
     @Override
-    public User update(User user) {
+    public UserDto update(UserDto user) {
         BeanPropertySqlParameterSource namedParameters = getBeanPropertySql(user);
         namedParameterJdbcTemplate.update(UPDATE, namedParameters);
         log.debug("Update UPDATE has been completed");
@@ -128,18 +117,14 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public String findPasswordById(long id) {
-        try {
-            String password = jdbcTemplate.queryForObject(FIND_PASSWORD_BY_ID, String.class, id);
-            log.debug("Select FIND_PASSWORD_BY_ID has been completed");
-            return password;
-        } catch (EmptyResultDataAccessException e) {
-            return null;
-        }
+        String password = jdbcTemplate.queryForObject(FIND_PASSWORD_BY_ID, String.class, id);
+        log.debug("Select FIND_PASSWORD_BY_ID has been completed");
+        return password;
     }
 
     @Override
-    public List<User> findByLastName(String lastName) {
-        List<User> users = jdbcTemplate.query(FIND_BY_LAST_NAME, this::mapRow, lastName);
+    public List<UserDto> findByLastName(String lastName) {
+        List<UserDto> users = jdbcTemplate.query(FIND_BY_LAST_NAME, this::mapRow, lastName);
         log.debug("Select FIND_BY_LAST_NAME has been completed");
         return users;
     }

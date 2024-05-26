@@ -1,7 +1,7 @@
 package com.belhard.bookstore.data.dao.impl;
 
 import com.belhard.bookstore.data.dao.BookDao;
-import com.belhard.bookstore.data.entity.Book;
+import com.belhard.bookstore.data.dto.BookDto;
 import com.belhard.bookstore.data.entity.CoverType;
 import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
@@ -35,8 +35,8 @@ public class BookDaoImpl implements BookDao {
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Nullable
-    private Book mapRow(ResultSet rs, int rowNum) throws SQLException {
-        Book book = new Book();
+    private BookDto mapRow(ResultSet rs, int rowNum) throws SQLException {
+        BookDto book = new BookDto();
         book.setId(rs.getLong("id"));
         book.setAuthor(rs.getString("author"));
         book.setIsbn(rs.getString("isbn"));
@@ -47,7 +47,7 @@ public class BookDaoImpl implements BookDao {
         return book;
     }
 
-    private BeanPropertySqlParameterSource getBeanPropertySql(Book book) {
+    private BeanPropertySqlParameterSource getBeanPropertySql(BookDto book) {
         BeanPropertySqlParameterSource namedParameters = new BeanPropertySqlParameterSource(book);
         namedParameters.registerSqlType("isbn", Types.VARCHAR);
         namedParameters.registerSqlType("coverType", Types.VARCHAR);
@@ -55,43 +55,35 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public Book findById(long id) {
-        try {
-            Book book = jdbcTemplate.queryForObject(FIND_BY_ID, this::mapRow, id);
+    public BookDto findById(long id) {
+            BookDto book = jdbcTemplate.queryForObject(FIND_BY_ID, this::mapRow, id);
             log.debug("Select FIND_BY_ID has been completed");
             return book;
-        } catch (EmptyResultDataAccessException e) {
-            return null;
-        }
     }
 
     @Override
-    public Book findByIsbn(String isbn) {
-        try {
-            Book book = jdbcTemplate.queryForObject(FIND_BY_ISBN, this::mapRow, isbn);
+    public BookDto findByIsbn(String isbn) {
+            BookDto book = jdbcTemplate.queryForObject(FIND_BY_ISBN, this::mapRow, isbn);
             log.debug("Select FIND_BY_ISBN has been completed");
             return book;
-        } catch (EmptyResultDataAccessException e) {
-            return null;
-        }
     }
 
     @Override
-    public List<Book> findAll() {
-        List<Book> books = jdbcTemplate.query(FIND_ALL, this::mapRow);
+    public List<BookDto> findAll() {
+        List<BookDto> books = jdbcTemplate.query(FIND_ALL, this::mapRow);
         log.debug("Select FIND_ALL has been completed");
         return books;
     }
 
     @Override
-    public List<Book> findByAuthor(String author) {
-        List<Book> books = jdbcTemplate.query(FIND_BY_AUTHOR, this::mapRow, author);
+    public List<BookDto> findByAuthor(String author) {
+        List<BookDto> books = jdbcTemplate.query(FIND_BY_AUTHOR, this::mapRow, author);
         log.debug("Select FIND_BY_AUTHOR has been completed");
         return books;
     }
 
     @Override
-    public Book create(Book book) {
+    public BookDto create(BookDto book) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         BeanPropertySqlParameterSource namedParameters = getBeanPropertySql(book);
         namedParameterJdbcTemplate.update(CREATE, namedParameters, keyHolder, new String[]{"id"});
@@ -100,7 +92,7 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public Book update(Book book) {
+    public BookDto update(BookDto book) {
         BeanPropertySqlParameterSource namedParameters = getBeanPropertySql(book);
         namedParameterJdbcTemplate.update(UPDATE, namedParameters);
         log.debug("Update UPDATE has been completed");
