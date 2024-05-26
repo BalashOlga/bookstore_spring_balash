@@ -105,7 +105,15 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto create(BookDto bookDto) {
+
         log.debug("Calling create");
+        String isbnToBeCreate = bookDto.getIsbn();
+        Book byIsbn = bookDao.findByIsbn(isbnToBeCreate);
+
+        if (byIsbn != null) {
+            throw new NotFoundException("No valid isbn" + bookDto.getIsbn() + "! Book is not created!");
+        }
+
         bookDto.setCoverType(CoverType.valueOf("HARD"));
         Book book = bookDao.create(toBook(bookDto));
 

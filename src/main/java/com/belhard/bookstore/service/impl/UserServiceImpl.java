@@ -2,7 +2,6 @@ package com.belhard.bookstore.service.impl;
 
 import com.belhard.bookstore.controller.NotFoundException;
 import com.belhard.bookstore.data.dao.UserDao;
-import com.belhard.bookstore.data.entity.CoverType;
 import com.belhard.bookstore.data.entity.Role;
 import com.belhard.bookstore.data.entity.User;
 import com.belhard.bookstore.service.UserService;
@@ -161,6 +160,13 @@ public class UserServiceImpl implements UserService {
     public UserDtoLogin create(UserDtoLogin userDtoLogin) {
         log.debug("Calling create");
 
+        String loginToBeSaved = userDtoLogin.getLogin();
+        User byLogin = userDao.findByLogin(loginToBeSaved);
+
+        if (byLogin != null) {
+            throw new NotFoundException("No valid login " + userDtoLogin.getLogin() + "! User is not created!");
+        }
+
         userDtoLogin.setRole(Role.valueOf("CUSTOMER"));
         User user = userDao.create(toUser(userDtoLogin));
 
@@ -180,7 +186,7 @@ public class UserServiceImpl implements UserService {
         User byLogin = userDao.findByLogin(loginToBeUpdate);
 
         if (byLogin != null && !byLogin.getId().equals(userDto.getId())) {
-            throw new NotFoundException("No valid login" + userDto.getLogin() + "! Book is not updated!");
+            throw new NotFoundException("No valid login " + userDto.getLogin() + "! Book is not updated!");
         }
         if (userDto.getPassword() == null) {
             userDto.setPassword(byLogin.getPassword());

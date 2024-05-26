@@ -6,6 +6,7 @@ import com.belhard.bookstore.data.entity.CoverType;
 import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -48,22 +49,31 @@ public class BookDaoImpl implements BookDao {
 
     private BeanPropertySqlParameterSource getBeanPropertySql(Book book) {
         BeanPropertySqlParameterSource namedParameters = new BeanPropertySqlParameterSource(book);
+        namedParameters.registerSqlType("isbn", Types.VARCHAR);
         namedParameters.registerSqlType("coverType", Types.VARCHAR);
         return namedParameters;
     }
 
     @Override
     public Book findById(long id) {
-        Book book = jdbcTemplate.queryForObject(FIND_BY_ID, this::mapRow, id);
-        log.debug("Select FIND_BY_ID has been completed");
-        return book;
+        try {
+            Book book = jdbcTemplate.queryForObject(FIND_BY_ID, this::mapRow, id);
+            log.debug("Select FIND_BY_ID has been completed");
+            return book;
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     @Override
     public Book findByIsbn(String isbn) {
-        Book book = jdbcTemplate.queryForObject(FIND_BY_ISBN, this::mapRow, isbn);
-        log.debug("Select FIND_BY_ISBN has been completed");
-        return book;
+        try {
+            Book book = jdbcTemplate.queryForObject(FIND_BY_ISBN, this::mapRow, isbn);
+            log.debug("Select FIND_BY_ISBN has been completed");
+            return book;
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     @Override
@@ -88,7 +98,6 @@ public class BookDaoImpl implements BookDao {
         log.debug("Update CREATE has been completed");
         return findById(keyHolder.getKey().longValue());
     }
-
 
     @Override
     public Book update(Book book) {

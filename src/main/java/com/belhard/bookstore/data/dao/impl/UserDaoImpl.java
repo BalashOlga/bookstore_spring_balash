@@ -6,6 +6,8 @@ import com.belhard.bookstore.data.entity.User;
 import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -57,16 +59,24 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User findById(long id) {
-        User user = jdbcTemplate.queryForObject(FIND_BY_ID, this::mapRow, id);
-        log.debug("Select FIND_BY_ID has been completed");
-        return user;
+        try {
+            User user = jdbcTemplate.queryForObject(FIND_BY_ID, this::mapRow, id);
+            log.debug("Select FIND_BY_ID has been completed");
+            return user;
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     @Override
     public User findByEmail(String email) {
-        User user = jdbcTemplate.queryForObject(FIND_BY_EMAIL, this::mapRow, email);
-        log.debug("Select FIND_BY_EMAIL has been completed");
-        return user;
+        try {
+            User user = jdbcTemplate.queryForObject(FIND_BY_EMAIL, this::mapRow, email);
+            log.debug("Select FIND_BY_EMAIL has been completed");
+            return user;
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     @Override
@@ -78,9 +88,13 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User findByLogin(String login) {
-        User user = jdbcTemplate.queryForObject(FIND_BY_LOGIN, this::mapRow, login);
-        log.debug("Select FIND_BY_LOGIN has been completed");
-        return user;
+        try {
+            User user = jdbcTemplate.queryForObject(FIND_BY_LOGIN, this::mapRow, login);
+            log.debug("Select FIND_BY_LOGIN has been completed");
+            return user;
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     @Override
@@ -114,9 +128,13 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public String findPasswordById(long id) {
-        String password = jdbcTemplate.queryForObject(FIND_PASSWORD_BY_ID, String.class, id);
-        log.debug("Select FIND_PASSWORD_BY_ID has been completed");
-        return password;
+        try {
+            String password = jdbcTemplate.queryForObject(FIND_PASSWORD_BY_ID, String.class, id);
+            log.debug("Select FIND_PASSWORD_BY_ID has been completed");
+            return password;
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     @Override
