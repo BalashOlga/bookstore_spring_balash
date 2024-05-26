@@ -24,6 +24,8 @@
         <jstl.version>2.0.0</jstl.version>
         <spring-context.version>6.1.7</spring-context.version>
         <jakarta.annotation.version>3.0.0</jakarta.annotation.version>
+        <HikariCP.version>5.1.0</HikariCP.version>
+
     </properties>
 
     <dependencies>
@@ -58,11 +60,11 @@
             <version>${jstl.version}</version>
         </dependency>
 
-            <dependency>
-                <groupId>org.apache.logging.log4j</groupId>
-                <artifactId>log4j-slf4j-impl</artifactId>
-                <version>${log4j2-slf4j.version}</version>
-            </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j-impl</artifactId>
+            <version>${log4j2-slf4j.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -83,6 +85,17 @@
             <version>${jakarta.annotation.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>${spring-context.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>${HikariCP.version}</version>
+        </dependency>
 
     </dependencies>
 

@@ -18,7 +18,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
-    //    private static final Logger log = LogManager.getFormatterLogger(UserServiceImpl.class);
     private final UserDao userDao;
 
     private UserDto toDto(User user) {
@@ -165,8 +164,10 @@ public class UserServiceImpl implements UserService {
         User byLogin = userDao.findByLogin(loginToBeSaved);
 
         if (byLogin != null) {
-            throw new NotFoundException("No valid login" + userDtoLogin.getLogin() + "! User is not created!");
+            throw new NotFoundException("No valid login " + userDtoLogin.getLogin() + "! User is not created!");
         }
+
+        userDtoLogin.setRole(Role.valueOf("CUSTOMER"));
         User user = userDao.create(toUser(userDtoLogin));
 
         if (user == null){
@@ -185,7 +186,7 @@ public class UserServiceImpl implements UserService {
         User byLogin = userDao.findByLogin(loginToBeUpdate);
 
         if (byLogin != null && !byLogin.getId().equals(userDto.getId())) {
-            throw new NotFoundException("No valid login" + userDto.getLogin() + "! Book is not updated!");
+            throw new NotFoundException("No valid login " + userDto.getLogin() + "! Book is not updated!");
         }
         if (userDto.getPassword() == null) {
             userDto.setPassword(byLogin.getPassword());
