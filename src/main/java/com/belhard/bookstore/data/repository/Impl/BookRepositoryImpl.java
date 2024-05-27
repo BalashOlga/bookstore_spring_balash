@@ -1,6 +1,6 @@
 package com.belhard.bookstore.data.repository.Impl;
 
-import com.belhard.bookstore.data.conversion.BookDataConversion;
+import com.belhard.bookstore.data.conversion.DataConversion;
 import com.belhard.bookstore.data.dao.BookDao;
 import com.belhard.bookstore.data.entity.Book;
 import com.belhard.bookstore.data.repository.BookRepository;
@@ -16,11 +16,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BookRepositoryImpl implements BookRepository {
     private final BookDao bookDao;
+    private final DataConversion dataConversion;
 
     @Override
     public Book findById(long id) {
         try {
-            return BookDataConversion.toBook(bookDao.findById(id));
+            return dataConversion.toEntity(bookDao.findById(id));
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
@@ -29,7 +30,7 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     public Book findByIsbn(String isbn) {
         try {
-            return BookDataConversion.toBook(bookDao.findByIsbn(isbn));
+            return dataConversion.toEntity(bookDao.findByIsbn(isbn));
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
@@ -40,7 +41,7 @@ public class BookRepositoryImpl implements BookRepository {
         return
                 bookDao.findAll()
                 .stream()
-                .map(BookDataConversion::toBook)
+                .map(dataConversion::toEntity)
                 .toList();
     }
 
@@ -48,14 +49,14 @@ public class BookRepositoryImpl implements BookRepository {
     public List<Book> findByAuthor(String author) {
         return  bookDao.findAll()
                 .stream()
-                .map(BookDataConversion::toBook)
+                .map(dataConversion::toEntity)
                 .toList();
     }
 
     @Override
     public Book create(Book book) {
         try {
-            return BookDataConversion.toBook(bookDao.create(BookDataConversion.toDto(book)));
+            return dataConversion.toEntity(bookDao.create(dataConversion.toDto(book)));
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
@@ -64,7 +65,7 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     public Book update(Book book) {
         try {
-            return BookDataConversion.toBook(bookDao.update(BookDataConversion.toDto(book)));
+            return dataConversion.toEntity(bookDao.update(dataConversion.toDto(book)));
         } catch (EmptyResultDataAccessException e) {
             return null;
         }

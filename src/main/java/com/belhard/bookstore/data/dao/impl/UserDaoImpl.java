@@ -89,10 +89,7 @@ public class UserDaoImpl implements UserDao {
         BeanPropertySqlParameterSource namedParameters = getBeanPropertySql(user);
         int i = namedParameterJdbcTemplate.update(CREATE, namedParameters, keyHolder, new String[]{"id"});
         log.debug("Update CREATE has been completed");
-        if (i>0) {
-            return findById(keyHolder.getKey().longValue());
-        }
-        return null;
+        return findById(keyHolder.getKey().longValue());
     }
 
     @Override

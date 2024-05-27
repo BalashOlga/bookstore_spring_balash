@@ -1,13 +1,12 @@
-package com.belhard.bookstore.data.dto;
+package com.belhard.bookstore.data.entity;
 
 import lombok.Data;
 
 import java.math.BigDecimal;
 
 @Data
-public class OrderItemsDto {
-    Long bookId;
+public class OrderItem {
+    Book book;
     Integer quantity;
     BigDecimal price;
-    Long orderId;
 }

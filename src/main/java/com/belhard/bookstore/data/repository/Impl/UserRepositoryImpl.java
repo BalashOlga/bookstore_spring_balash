@@ -1,6 +1,6 @@
 package com.belhard.bookstore.data.repository.Impl;
 
-import com.belhard.bookstore.data.conversion.UserDataСonversion;
+import com.belhard.bookstore.data.conversion.DataConversion;
 import com.belhard.bookstore.data.dao.UserDao;
 import com.belhard.bookstore.data.entity.User;
 import com.belhard.bookstore.data.repository.UserRepository;
@@ -16,11 +16,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserRepositoryImpl implements UserRepository {
     private final UserDao userDao;
+    private final DataConversion dataConversion;
 
     @Override
     public User findById(long id) {
         try {
-            return UserDataСonversion.toUser(userDao.findById(id));
+            return dataConversion.toEntity(userDao.findById(id));
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
@@ -29,7 +30,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public User findByEmail(String email) {
         try {
-            return UserDataСonversion.toUser(userDao.findByEmail(email));
+            return dataConversion.toEntity(userDao.findByEmail(email));
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
@@ -39,14 +40,14 @@ public class UserRepositoryImpl implements UserRepository {
     public List<User> findByLastName(String lastName) {
         return   userDao.findByLastName(lastName)
                 .stream()
-                .map(UserDataСonversion::toUser)
+                .map(dataConversion::toEntity)
                 .toList();
     }
 
     @Override
     public User findByLogin(String login) {
         try {
-            return UserDataСonversion.toUser(userDao.findByLogin(login));
+            return dataConversion.toEntity(userDao.findByLogin(login));
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
@@ -56,14 +57,14 @@ public class UserRepositoryImpl implements UserRepository {
     public List<User> findAll() {
         return   userDao.findAll()
                 .stream()
-                .map(UserDataСonversion::toUser)
+                .map(dataConversion::toEntity)
                 .toList();
     }
 
     @Override
     public User create(User user) {
         try {
-            return  UserDataСonversion.toUser(userDao.create(UserDataСonversion.toDto(user)));
+            return  dataConversion.toEntity(userDao.create(dataConversion.toDto(user)));
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
@@ -72,7 +73,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public User update(User user) {
         try {
-            return UserDataСonversion.toUser(userDao.update(UserDataСonversion.toDto(user)));
+            return dataConversion.toEntity(userDao.update(dataConversion.toDto(user)));
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
