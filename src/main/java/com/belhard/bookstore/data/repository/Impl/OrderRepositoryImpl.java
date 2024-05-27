@@ -64,7 +64,6 @@ public class OrderRepositoryImpl implements OrderRepository {
     @Override
     public List<Order> findAll() {
         try {
-            log.debug("7777777777777");
             return orderDao.findAll()
                     .stream()
                     .map(this::buildOrder)

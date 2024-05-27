@@ -57,7 +57,6 @@ public class OrderServiceImpl implements OrderService {
         log.debug("Calling getAll");
 
         List<Order> orders =  orderRepository.findAll();
-        log.debug("8888888888888888");
         if (orders == null){
             throw new NotFoundException("Orders are not found!");
         } else {
