@@ -6,4 +6,5 @@
     <li><a href="controller?command=book_create_form">Create Book</a></li>
     <li><a href="controller?command=users">All Users</a></li>
     <li><a href="controller?command=user_create_form">Create User</a></li>
+    <li><a href="controller?command=orders">All Orders</a></li>
 </ul>

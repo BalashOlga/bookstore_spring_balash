@@ -32,6 +32,7 @@ public class OrderItemDaoImpl implements OrderItemDao {
     private OrderItemDto mapRow(ResultSet rs, int rowNum) throws SQLException {
         OrderItemDto order = new OrderItemDto();
         order.setOrderId(rs.getLong("order_id"));
+        order.setBookId(rs.getLong("book_id"));
         order.setPrice(rs.getBigDecimal("price"));
         order.setQuantity(rs.getInt("quantity"));
         log.debug(order.toString());

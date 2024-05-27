@@ -73,7 +73,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<BookDto> getAll() {
-        log.debug("Calling getByAll");
+        log.debug("Calling getAll");
 
        List<Book> listBook =  bookRepository.findAll();
 

@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Data
-public class ServiceDto {
+public class OrderDto {
     Long id;
     User user;
     List<OrderItem> items;
