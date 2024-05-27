@@ -1,24 +1,25 @@
 package com.belhard.bookstore.data.dao;
 
-import com.belhard.bookstore.data.entity.User;
+
+import com.belhard.bookstore.data.dto.UserDto;
 
 import java.util.List;
 
 public interface UserDao {
 
-    User findById(long id);
+    UserDto findById(long id);
 
-    User findByEmail(String email);
+    UserDto findByEmail(String email);
 
-    List<User> findByLastName(String lastName);
+    List<UserDto> findByLastName(String lastName);
 
-    User findByLogin(String login);
+    UserDto findByLogin(String login);
 
-    List<User> findAll();
+    List<UserDto> findAll();
 
-    User create(User user);
+    UserDto create(UserDto user);
 
-    User update(User user);
+    UserDto update(UserDto user);
 
     boolean delete(long id);
 

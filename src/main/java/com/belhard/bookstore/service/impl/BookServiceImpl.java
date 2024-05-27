@@ -1,9 +1,9 @@
 package com.belhard.bookstore.service.impl;
 
 import com.belhard.bookstore.controller.NotFoundException;
-import com.belhard.bookstore.data.dao.BookDao;
 import com.belhard.bookstore.data.entity.Book;
 import com.belhard.bookstore.data.entity.CoverType;
+import com.belhard.bookstore.data.repository.BookRepository;
 import com.belhard.bookstore.service.BookService;
 import com.belhard.bookstore.service.dto.BookDto;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class BookServiceImpl implements BookService {
-    private final BookDao bookDao;
+    private final BookRepository bookRepository;
 
     private BookDto toDto(Book book) {
         BookDto bookDto = new BookDto();
@@ -48,7 +48,7 @@ public class BookServiceImpl implements BookService {
     public BookDto getById(long id) {
         log.debug("Calling getById");
 
-        Book book = bookDao.findById(id);
+        Book book = bookRepository.findById(id);
 
         if (book == null) {
             throw new NotFoundException("Book whith id = " + id + " is not found!");
@@ -62,7 +62,7 @@ public class BookServiceImpl implements BookService {
     public BookDto getByIsbn(String isbn) {
         log.debug("Calling getByIsbn");
 
-        Book book= bookDao.findByIsbn(isbn);
+        Book book= bookRepository.findByIsbn(isbn);
 
         if (book == null){
             throw new NotFoundException("Book whith isbn = " + isbn + " is not found!");
@@ -73,9 +73,9 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<BookDto> getAll() {
-        log.debug("Calling getByAll");
+        log.debug("Calling getAll");
 
-       List<Book> listBook =  bookDao.findAll();
+       List<Book> listBook =  bookRepository.findAll();
 
         if (listBook.isEmpty()){
             throw new NotFoundException("Books are not found!");
@@ -91,7 +91,7 @@ public class BookServiceImpl implements BookService {
     public List<BookDto> getByAuthor(String author) {
         log.debug("Calling getByAuthor");
 
-        List<Book> listBook =  bookDao.findByAuthor(author);
+        List<Book> listBook =  bookRepository.findByAuthor(author);
 
         if (listBook.isEmpty()){
             throw new NotFoundException("Books are not found!");
@@ -106,16 +106,16 @@ public class BookServiceImpl implements BookService {
     @Override
     public BookDto create(BookDto bookDto) {
 
+        bookDto.setCoverType(CoverType.valueOf("HARD"));
         log.debug("Calling create");
         String isbnToBeCreate = bookDto.getIsbn();
-        Book byIsbn = bookDao.findByIsbn(isbnToBeCreate);
+        Book byIsbn = bookRepository.findByIsbn(isbnToBeCreate);
 
         if (byIsbn != null) {
             throw new NotFoundException("No valid isbn" + bookDto.getIsbn() + "! Book is not created!");
         }
 
-        bookDto.setCoverType(CoverType.valueOf("HARD"));
-        Book book = bookDao.create(toBook(bookDto));
+        Book book = bookRepository.create(toBook(bookDto));
 
         if (book == null){
             throw new NotFoundException("Book is not create!");
@@ -129,7 +129,7 @@ public class BookServiceImpl implements BookService {
         log.debug("Calling update");
 
         String isbnToBeUpdated = bookDto.getIsbn();
-        Book byIsbn = bookDao.findByIsbn(isbnToBeUpdated);
+        Book byIsbn = bookRepository.findByIsbn(isbnToBeUpdated);
 
         if (byIsbn != null && !byIsbn.getId().equals(bookDto.getId())) {
             throw new NotFoundException("No valid isbn" + bookDto.getIsbn() + "! Book  is not updated!");
@@ -150,7 +150,7 @@ public class BookServiceImpl implements BookService {
             bookDto.setCoverType(byIsbn.getCoverType());
         }
 
-        Book book = bookDao.update(toBook(bookDto));
+        Book book = bookRepository.update(toBook(bookDto));
         if (book == null){
             throw new NotFoundException("Book is not update!");
         } else {
@@ -162,7 +162,7 @@ public class BookServiceImpl implements BookService {
     public void delete(long id) {
         log.debug("Calling delete");
 
-        if (!bookDao.delete(id)) {
+        if (!bookRepository.delete(id)) {
             throw new NotFoundException("Deletion error by id = " + id + "!" );
         }
     }
@@ -170,13 +170,13 @@ public class BookServiceImpl implements BookService {
     @Override
     public long getCountAll() {
         log.debug("Calling getCountAll");
-        return bookDao.countAll();
+        return bookRepository.countAll();
     }
 
     @Override
     public BigDecimal getCostByAuthor(String author) {
         log.debug("Calling getCostByAuthor");
-        List<Book> bookList = bookDao.findByAuthor(author);
+        List<Book> bookList = bookRepository.findByAuthor(author);
 
         if (bookList.isEmpty()){
             throw new NotFoundException("Books by author " + author + " are not found!" );

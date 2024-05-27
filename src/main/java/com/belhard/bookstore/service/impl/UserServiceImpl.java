@@ -1,9 +1,9 @@
 package com.belhard.bookstore.service.impl;
 
 import com.belhard.bookstore.controller.NotFoundException;
-import com.belhard.bookstore.data.dao.UserDao;
 import com.belhard.bookstore.data.entity.Role;
 import com.belhard.bookstore.data.entity.User;
+import com.belhard.bookstore.data.repository.UserRepository;
 import com.belhard.bookstore.service.UserService;
 import com.belhard.bookstore.service.dto.UserDto;
 import com.belhard.bookstore.service.dto.UserDtoLogin;
@@ -18,7 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
-    private final UserDao userDao;
+    private final UserRepository userRepository;
 
     private UserDto toDto(User user) {
         UserDto userDto = new UserDto();
@@ -68,6 +68,7 @@ public class UserServiceImpl implements UserService {
         user.setEmail(userDto.getEmail());
         user.setRole(userDto.getRole());
 
+
         return user;
     }
 
@@ -77,8 +78,7 @@ public class UserServiceImpl implements UserService {
         user.setLogin(userDtoLogin.getLogin());
         user.setPassword(userDtoLogin.getPassword());
         user.setEmail(userDtoLogin.getLogin());
-        user.setRole(Role.CUSTOMER);
-
+        user.setRole(userDtoLogin.getRole());
         return user;
     }
 
@@ -86,7 +86,7 @@ public class UserServiceImpl implements UserService {
     public UserDtoWithoutPassword getById(long id) {
         log.debug("Calling getById");
 
-        User user = userDao.findById(id);
+        User user = userRepository.findById(id);
 
         if (user == null) {
             throw new NotFoundException("User by id = " + id + " is not found!");
@@ -99,7 +99,7 @@ public class UserServiceImpl implements UserService {
     public UserDtoWithoutPassword getByEmail(String email) {
         log.debug("Calling getByEmail");
 
-        User user = userDao.findByEmail(email);
+        User user = userRepository.findByEmail(email);
 
         if (user == null) {
             throw new NotFoundException("User by email = " + email + " is not found!");
@@ -113,7 +113,7 @@ public class UserServiceImpl implements UserService {
         log.debug("Calling getByLastName");
 
 
-        List<User> listUser = userDao.findByLastName(lastName);
+        List<User> listUser = userRepository.findByLastName(lastName);
 
 
         if (listUser.isEmpty()) {
@@ -130,7 +130,7 @@ public class UserServiceImpl implements UserService {
     public UserDtoWithoutPassword getByLogin(String login) {
         log.debug("Calling getByLogin");
 
-        User user = userDao.findByLogin(login);
+        User user = userRepository.findByLogin(login);
 
         if (user == null) {
             throw new NotFoundException("User by login = " + login + " is not found!");
@@ -143,7 +143,7 @@ public class UserServiceImpl implements UserService {
     public List<UserDtoWithoutPassword> getAll() {
         log.debug("Calling getAll");
 
-        List<User> listUser = userDao.findAll();
+        List<User> listUser = userRepository.findAll();
 
 
         if (listUser.isEmpty()) {
@@ -159,16 +159,19 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDtoLogin create(UserDtoLogin userDtoLogin) {
         log.debug("Calling create");
-
+        userDtoLogin.setRole(Role.valueOf("CUSTOMER"));
         String loginToBeSaved = userDtoLogin.getLogin();
-        User byLogin = userDao.findByLogin(loginToBeSaved);
-
+        log.debug("1");
+        User byLogin = userRepository.findByLogin(loginToBeSaved);
+        log.debug("2");
         if (byLogin != null) {
+            log.debug("3");
             throw new NotFoundException("No valid login " + userDtoLogin.getLogin() + "! User is not created!");
         }
-
-        userDtoLogin.setRole(Role.valueOf("CUSTOMER"));
-        User user = userDao.create(toUser(userDtoLogin));
+        log.debug("4");
+        log.debug("5");
+        User user = userRepository.create(toUser(userDtoLogin));
+        log.debug("6");
 
         if (user == null){
             throw new NotFoundException("User is not create!");
@@ -183,10 +186,10 @@ public class UserServiceImpl implements UserService {
         log.debug("Calling update");
 
         String loginToBeUpdate = userDto.getLogin();
-        User byLogin = userDao.findByLogin(loginToBeUpdate);
+        User byLogin = userRepository.findByLogin(loginToBeUpdate);
 
         if (byLogin != null && !byLogin.getId().equals(userDto.getId())) {
-            throw new NotFoundException("No valid login " + userDto.getLogin() + "! Book is not updated!");
+            throw new NotFoundException("No valid login" + userDto.getLogin() + "! Book is not updated!");
         }
         if (userDto.getPassword() == null) {
             userDto.setPassword(byLogin.getPassword());
@@ -196,7 +199,7 @@ public class UserServiceImpl implements UserService {
             userDto.setRole(byLogin.getRole());
         }
 
-        User user = userDao.update(toUser(userDto));
+        User user = userRepository.update(toUser(userDto));
         if (user == null){
             throw new NotFoundException("User is not update!");
         } else {
@@ -208,7 +211,7 @@ public class UserServiceImpl implements UserService {
     public void delete(long id) {
         log.debug("Calling delete");
 
-        if (!userDao.delete(id)) {
+        if (!userRepository.delete(id)) {
             throw new NotFoundException("Deletion error by id = " + id + "!");
         }
     }
@@ -217,14 +220,14 @@ public class UserServiceImpl implements UserService {
     public long getCountAll() {
         log.debug("Calling getCountAll");
 
-        return userDao.countAll();
+        return userRepository.countAll();
     }
 
     @Override
     public UserDtoLogin login(String login, String password) {
         log.debug("Calling login");
 
-        User user = userDao.findByLogin(login);
+        User user = userRepository.findByLogin(login);
 
         if (user == null) {
             throw new NotFoundException("No login!");
@@ -239,7 +242,7 @@ public class UserServiceImpl implements UserService {
     public String getPassword(long id) {
         log.debug("Calling getPassword");
 
-        String password = userDao.findPasswordById(id);
+        String password = userRepository.findPasswordById(id);
         return password;
     }
 }
