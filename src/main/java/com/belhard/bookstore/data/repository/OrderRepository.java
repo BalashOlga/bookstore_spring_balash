@@ -8,11 +8,11 @@ import java.util.List;
 public interface OrderRepository {
     Order findById(long id);
 
+    Order findOrderItemsByOrderId(long id);
+
     List<Order> findAll();
 
-    Order create(Order order);
-
-    Order update(Order order);
+    Order save(Order order);
 
     boolean delete(long orderId);
 }

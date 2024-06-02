@@ -3,8 +3,6 @@ package com.belhard.bookstore.data.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
-
-
 @Entity
 @Table(name ="users")
 @Data

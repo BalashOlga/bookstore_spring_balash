@@ -14,7 +14,6 @@ import java.util.List;
 
 @Repository
 @Slf4j
-@RequiredArgsConstructor
 @Transactional
 public class UserRepositoryImpl implements UserRepository {
 
@@ -80,11 +79,14 @@ public class UserRepositoryImpl implements UserRepository {
     public User save(User user) {
         if (user.getId() != null) {
             manager.merge(user);
-            return manager.find(User.class, user.getId());
+            manager.flush();
+            manager.find(User.class, user.getId());
+            return user;
         } else {
             manager.persist(user);
             manager.flush();
-            return manager.find(User.class, user.getId());
+            manager.refresh(user);
+            return user;
         }
     }
 
@@ -93,7 +95,6 @@ public class UserRepositoryImpl implements UserRepository {
         User user = manager.find(User.class, id);
         user.setDeleted(true);
         manager.flush();
-        manager.detach(user);
         return true;
     }
 

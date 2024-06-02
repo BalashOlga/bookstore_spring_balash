@@ -8,7 +8,8 @@ import java.math.BigDecimal;
 @Table(name ="books")
 @Data
 public class Book {
-    @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
