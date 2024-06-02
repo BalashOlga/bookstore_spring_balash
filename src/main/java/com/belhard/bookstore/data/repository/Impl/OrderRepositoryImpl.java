@@ -12,10 +12,13 @@ import com.belhard.bookstore.data.dto.UserDto;
 import com.belhard.bookstore.data.entity.Order;
 import com.belhard.bookstore.data.entity.OrderItem;
 import com.belhard.bookstore.data.repository.OrderRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,12 +26,16 @@ import java.util.List;
 @Repository
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 public class OrderRepositoryImpl implements OrderRepository {
     private final BookDao bookDao;
     private final UserDao userDao;
     private final OrderDao orderDao;
     private final OrderItemDao orderItemDao;
     private final DataConversion dataConversion;
+
+    @PersistenceContext
+    private EntityManager manager;
 
 
     @Override

@@ -14,9 +14,7 @@ public interface BookRepository {
 
     List<Book> findByAuthor(String author);
 
-    Book create(Book book);
-
-    Book update(Book book);
+    Book save(Book book);
 
     boolean delete(long id);
 

@@ -11,6 +11,7 @@ import com.belhard.bookstore.service.dto.UserDtoWithoutPassword;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -161,17 +162,11 @@ public class UserServiceImpl implements UserService {
         log.debug("Calling create");
         userDtoLogin.setRole(Role.valueOf("CUSTOMER"));
         String loginToBeSaved = userDtoLogin.getLogin();
-        log.debug("1");
         User byLogin = userRepository.findByLogin(loginToBeSaved);
-        log.debug("2");
         if (byLogin != null) {
-            log.debug("3");
             throw new NotFoundException("No valid login " + userDtoLogin.getLogin() + "! User is not created!");
         }
-        log.debug("4");
-        log.debug("5");
-        User user = userRepository.create(toUser(userDtoLogin));
-        log.debug("6");
+        User user = userRepository.save(toUser(userDtoLogin));
 
         if (user == null){
             throw new NotFoundException("User is not create!");
@@ -199,7 +194,7 @@ public class UserServiceImpl implements UserService {
             userDto.setRole(byLogin.getRole());
         }
 
-        User user = userRepository.update(toUser(userDto));
+        User user = userRepository.save(toUser(userDto));
         if (user == null){
             throw new NotFoundException("User is not update!");
         } else {
