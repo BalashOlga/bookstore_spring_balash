@@ -17,6 +17,7 @@ import java.util.List;
 @Transactional
 public class BookRepositoryImpl implements BookRepository {
 
+    private static final String FIND_BY_ID = "from Book where id = :id and deleted = false";
     private static final String FIND_ALL = "from Book where deleted = false";
     private static final String FIND_BY_ISBN = "from Book where isbn = :isbn and deleted = false";
     private static final String FIND_BY_AUTHOR = "from Book where author = :author and deleted = false";
@@ -27,7 +28,13 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public Book findById(long id) {
-        return manager.find(Book.class, id);
+        try {
+            return manager.createQuery(FIND_BY_ID, Book.class)
+                    .setParameter("id", id)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     @Override
@@ -67,8 +74,7 @@ public class BookRepositoryImpl implements BookRepository {
         if (book.getId() != null) {
             manager.merge(book);
             manager.flush();
-            manager.find(User.class, book.getId());
-            return book;
+            return findById(book.getId());
         } else {
             manager.persist(book);
             manager.flush();

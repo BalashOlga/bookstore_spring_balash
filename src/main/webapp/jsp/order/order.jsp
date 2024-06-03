@@ -29,7 +29,7 @@
                         <th>${item.book.author}</th>
                         <th>${item.book.isbn}</th>
                         <th>${item.book.coverType.name()}</th>
-                        th>${item.quantity}</th>
+                        <th>${item.quantity}</th>
                         <th>${item.book.cost}</th>
                     </tr>
                 </c:forEach>

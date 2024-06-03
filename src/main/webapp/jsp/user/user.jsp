@@ -30,6 +30,7 @@
                     <th>${user.role.name()}</th>
                     <th><a href="controller?command=users">All users</a></th>
                     <th><a href="controller?command=user_edit_form&id=${user.id}">Edit user</a></th>
+                    <th><a href="controller?command=user_orders&id=${user.id}">Users order</a></th>
                 </tr>
             </table>
         </c:if>

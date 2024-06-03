@@ -8,7 +8,7 @@ public interface UserRepository {
 
     User findById(long id);
 
-    User findByEmail(String email);
+    List<User> findByEmail(String email);
 
     List<User> findByLastName(String lastName);
 

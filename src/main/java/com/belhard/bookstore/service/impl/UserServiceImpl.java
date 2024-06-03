@@ -97,15 +97,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDtoWithoutPassword getByEmail(String email) {
+    public List<UserDtoWithoutPassword> getByEmail(String email) {
         log.debug("Calling getByEmail");
 
-        User user = userRepository.findByEmail(email);
+        List<User> listUser = userRepository.findByEmail(email);
 
-        if (user == null) {
+        if (listUser.isEmpty()) {
             throw new NotFoundException("User by email = " + email + " is not found!");
         } else {
-            return toDtoWithoutPassport(user);
+            return listUser
+                    .stream()
+                    .map(this::toDtoWithoutPassport)
+                    .toList();
         }
     }
 
@@ -168,7 +171,7 @@ public class UserServiceImpl implements UserService {
         }
         User user = userRepository.save(toUser(userDtoLogin));
 
-        if (user == null){
+        if (user == null) {
             throw new NotFoundException("User is not create!");
         } else {
             return toDtoLogin(user);
@@ -195,7 +198,7 @@ public class UserServiceImpl implements UserService {
         }
 
         User user = userRepository.save(toUser(userDto));
-        if (user == null){
+        if (user == null) {
             throw new NotFoundException("User is not update!");
         } else {
             return toDto(user);

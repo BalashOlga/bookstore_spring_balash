@@ -6,7 +6,6 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
@@ -17,6 +16,7 @@ import java.util.List;
 @Transactional
 public class UserRepositoryImpl implements UserRepository {
 
+    private static final String FIND_BY_ID = "from User where id = :id and deleted = false";
     private static final String FIND_ALL = "from User where deleted = false";
     private static final String FIND_BY_EMAIL = "from User where email = :email and deleted = false";
     private static final String FIND_BY_LAST_NAME = "from User where last_name = :lastName and deleted = false";
@@ -28,15 +28,21 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public User findById(long id) {
-        return manager.find(User.class, id);
+        try {
+            return manager.createQuery(FIND_BY_ID, User.class)
+                    .setParameter("id", id)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     @Override
-    public User findByEmail(String email) {
+    public List<User> findByEmail(String email) {
         try {
             return manager.createQuery(FIND_BY_EMAIL, User.class)
                     .setParameter("email", email)
-                    .getSingleResult();
+                    .getResultList();
         } catch (NoResultException e) {
             return null;
         }
@@ -80,8 +86,7 @@ public class UserRepositoryImpl implements UserRepository {
         if (user.getId() != null) {
             manager.merge(user);
             manager.flush();
-            manager.find(User.class, user.getId());
-            return user;
+            return findById(user.getId());
         } else {
             manager.persist(user);
             manager.flush();

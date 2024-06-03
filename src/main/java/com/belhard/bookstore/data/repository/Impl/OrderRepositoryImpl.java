@@ -17,6 +17,8 @@ import java.util.List;
 public class OrderRepositoryImpl implements OrderRepository {
 
     private static final String FIND_ALL = "from Order where deleted = false";
+    private static final String FIND_BY_ID = "from Order where id = :id and deleted = false";
+    private static final String FIND_BY_USER_ID = "from Order where Order.user_id.id = :user_id and deleted = false";
 
     @PersistenceContext
     private EntityManager manager;
@@ -24,14 +26,14 @@ public class OrderRepositoryImpl implements OrderRepository {
 
     @Override
     public Order findById(long id) {
-        return manager.find(Order.class, id);
+        try {
+            return manager.createQuery(FIND_BY_ID, Order.class)
+                    .setParameter("id", id)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
-
-    @Override
-    public Order findOrderItemsByOrderId(long id) {
-        return manager.find(Order.class, id);
-    }
-
 
     @Override
     public List<Order> findAll() {
@@ -44,12 +46,22 @@ public class OrderRepositoryImpl implements OrderRepository {
     }
 
     @Override
+    public List<Order> findByUserId(long id) {
+        try {
+            return manager.createQuery(FIND_BY_USER_ID, Order.class)
+                    .setParameter("user_id", id)
+                    .getResultList();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
+    @Override
     public Order save(Order order) {
         if (order.getId() != null) {
             manager.merge(order);
             manager.flush();
-            manager.find(Order.class, order.getId());
-            return order;
+            return findById(order.getId());
         } else {
             manager.persist(order);
             manager.flush();

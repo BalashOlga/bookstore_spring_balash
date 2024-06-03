@@ -9,7 +9,7 @@ import java.util.List;
 public interface UserService {
     UserDtoWithoutPassword getById(long id);
 
-    UserDtoWithoutPassword getByEmail(String email);
+    List<UserDtoWithoutPassword> getByEmail(String email);
 
     List<UserDtoWithoutPassword> getByLastName(String lastName);
 
