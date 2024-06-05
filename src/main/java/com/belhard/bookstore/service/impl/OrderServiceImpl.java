@@ -21,6 +21,7 @@ public class OrderServiceImpl implements OrderService {
 
     private OrderDto toDto(Order order) {
         OrderDto orderDto = new OrderDto();
+        order.getItems().size();
 
         orderDto.setId(order.getId());
         orderDto.setUser(order.getUser());

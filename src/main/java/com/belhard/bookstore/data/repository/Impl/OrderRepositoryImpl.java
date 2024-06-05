@@ -18,7 +18,7 @@ public class OrderRepositoryImpl implements OrderRepository {
 
     private static final String FIND_ALL = "from Order where deleted = false";
     private static final String FIND_BY_ID = "from Order where id = :id and deleted = false";
-    private static final String FIND_BY_USER_ID = "from Order where Order.user_id.id = :user_id and deleted = false";
+    private static final String FIND_BY_USER_ID = "from Order where user.id = :user_id and deleted = false";
 
     @PersistenceContext
     private EntityManager manager;
