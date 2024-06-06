@@ -8,7 +8,7 @@ public interface UserRepository {
 
     User findById(long id);
 
-    User findByEmail(String email);
+    List<User> findByEmail(String email);
 
     List<User> findByLastName(String lastName);
 
@@ -16,13 +16,11 @@ public interface UserRepository {
 
     List<User> findAll();
 
-    User create(User user);
-
-    User update(User user);
+    User save(User user);
 
     boolean delete(long id);
 
-    long countAll();
+    public long countAll();
 
     String findPasswordById(long id);
 }

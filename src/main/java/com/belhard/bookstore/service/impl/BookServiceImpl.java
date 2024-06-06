@@ -115,7 +115,7 @@ public class BookServiceImpl implements BookService {
             throw new NotFoundException("No valid isbn" + bookDto.getIsbn() + "! Book is not created!");
         }
 
-        Book book = bookRepository.create(toBook(bookDto));
+        Book book = bookRepository.save(toBook(bookDto));
 
         if (book == null){
             throw new NotFoundException("Book is not create!");
@@ -150,7 +150,7 @@ public class BookServiceImpl implements BookService {
             bookDto.setCoverType(byIsbn.getCoverType());
         }
 
-        Book book = bookRepository.update(toBook(bookDto));
+        Book book = bookRepository.save(toBook(bookDto));
         if (book == null){
             throw new NotFoundException("Book is not update!");
         } else {

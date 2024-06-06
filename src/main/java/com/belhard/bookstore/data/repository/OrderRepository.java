@@ -1,6 +1,5 @@
 package com.belhard.bookstore.data.repository;
 
-import com.belhard.bookstore.data.entity.Book;
 import com.belhard.bookstore.data.entity.Order;
 
 import java.util.List;
@@ -10,9 +9,9 @@ public interface OrderRepository {
 
     List<Order> findAll();
 
-    Order create(Order order);
+    List<Order> findByUserId(long id);
 
-    Order update(Order order);
+    Order save(Order order);
 
     boolean delete(long orderId);
 }
