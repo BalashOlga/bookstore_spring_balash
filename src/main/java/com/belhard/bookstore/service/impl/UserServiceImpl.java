@@ -187,7 +187,7 @@ public class UserServiceImpl implements UserService {
         User byLogin = userRepository.findByLogin(loginToBeUpdate);
 
         if (byLogin != null && !byLogin.getId().equals(userDto.getId())) {
-            throw new NotFoundException("No valid login" + userDto.getLogin() + "! Book is not updated!");
+            throw new NotFoundException("No valid login" + userDto.getLogin() + "! User is not updated!");
         }
         if (userDto.getPassword() == null) {
             userDto.setPassword(byLogin.getPassword());
