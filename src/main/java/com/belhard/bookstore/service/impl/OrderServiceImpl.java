@@ -1,6 +1,6 @@
 package com.belhard.bookstore.service.impl;
 
-import com.belhard.bookstore.controller.NotFoundException;
+import com.belhard.bookstore.service.exception.NotFoundException;
 import com.belhard.bookstore.data.entity.Order;
 import com.belhard.bookstore.data.repository.OrderRepository;
 import com.belhard.bookstore.service.OrderService;
@@ -80,7 +80,6 @@ public class OrderServiceImpl implements OrderService {
                     .toList();
         }
     }
-
 
     @Override
     public List<OrderDtoLazy> getAll() {

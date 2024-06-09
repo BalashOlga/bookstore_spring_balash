@@ -1,6 +1,8 @@
 package com.belhard.bookstore.service.impl;
 
-import com.belhard.bookstore.controller.NotFoundException;
+import com.belhard.bookstore.service.exception.NoEditException;
+import com.belhard.bookstore.service.exception.NoValidException;
+import com.belhard.bookstore.service.exception.NotFoundException;
 import com.belhard.bookstore.data.entity.Role;
 import com.belhard.bookstore.data.entity.User;
 import com.belhard.bookstore.data.repository.UserRepository;
@@ -11,7 +13,6 @@ import com.belhard.bookstore.service.dto.UserDtoWithoutPassword;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -167,12 +168,12 @@ public class UserServiceImpl implements UserService {
         String loginToBeSaved = userDtoLogin.getLogin();
         User byLogin = userRepository.findByLogin(loginToBeSaved);
         if (byLogin != null) {
-            throw new NotFoundException("No valid login " + userDtoLogin.getLogin() + "! User is not created!");
+            throw new NoValidException("No valid login " + userDtoLogin.getLogin() + "! User is not created!");
         }
         User user = userRepository.save(toUser(userDtoLogin));
 
         if (user == null) {
-            throw new NotFoundException("User is not create!");
+            throw new NoEditException("User is not create!");
         } else {
             return toDtoLogin(user);
         }
@@ -187,7 +188,7 @@ public class UserServiceImpl implements UserService {
         User byLogin = userRepository.findByLogin(loginToBeUpdate);
 
         if (byLogin != null && !byLogin.getId().equals(userDto.getId())) {
-            throw new NotFoundException("No valid login" + userDto.getLogin() + "! User is not updated!");
+            throw new NoValidException("No valid login" + userDto.getLogin() + "! User is not updated!");
         }
         if (userDto.getPassword() == null) {
             userDto.setPassword(byLogin.getPassword());
@@ -210,7 +211,7 @@ public class UserServiceImpl implements UserService {
         log.debug("Calling delete");
 
         if (!userRepository.delete(id)) {
-            throw new NotFoundException("Deletion error by id = " + id + "!");
+            throw new NoEditException("Deletion error by id = " + id + "!");
         }
     }
 
@@ -228,10 +229,10 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByLogin(login);
 
         if (user == null) {
-            throw new NotFoundException("No login!");
+            throw new NoValidException("No login!");
         }
         if (!password.equals(user.getPassword())) {
-            throw new NotFoundException("No login!");
+            throw new NoValidException("No login!");
         }
         return toDtoLogin(user);
     }

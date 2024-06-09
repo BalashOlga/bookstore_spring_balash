@@ -7,8 +7,12 @@
     </head>
     <body>
         <jsp:include page="navbar.jsp"/>
-        <h1>  Error occured ...</h1>
-        <p>Status: ${status}</p>
-        <p>Reason: ${reason}</p>
+        <h1>  Error!!!  </h1>
+         <c:if test="${message != null}">
+           <h1>${message}</h1>
+         </c:if>
+         <c:if test="${message = null}">
+            <h1> Something went wrong ...}</h1>
+         </c:if>
     </body>
 </html>
