@@ -1,4 +1,4 @@
-package com.belhard.bookstore.controller;
+package com.belhard.bookstore.web.controller;
 
 import com.belhard.bookstore.service.exception.*;
 import lombok.extern.slf4j.Slf4j;

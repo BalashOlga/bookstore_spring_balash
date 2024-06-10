@@ -13,10 +13,11 @@
        <h1>Login, please</h1>
        <form method="post">
            <input type="hidden" value="login">
-           <h2> "enter login" </h2>
+           <h2> enter login: </h2>
            <label for="login">Login: </label>
            <input name="login" type="email"/>
            <br/>
+           <h2> enter password: </h2>
            <label for="enter password">Pasword: </label>
            <input name="password" type="password" minlength="8"/>
            <br/>

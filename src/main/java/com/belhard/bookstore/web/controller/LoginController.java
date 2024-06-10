@@ -1,4 +1,4 @@
-package com.belhard.bookstore.controller;
+package com.belhard.bookstore.web.controller;
 
 import com.belhard.bookstore.service.UserService;
 import com.belhard.bookstore.service.dto.UserDtoWithoutPassword;
@@ -23,13 +23,13 @@ public class LoginController {
     public String login(@RequestParam String login, @RequestParam String password, HttpSession session) {
         UserDtoWithoutPassword user = service.login(login, password);
         session.setAttribute("user", user);
-        return "index";
+        return "redirect:/home";
     }
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
-        return "index";
+        return "redirect:/home";
     }
 }
 

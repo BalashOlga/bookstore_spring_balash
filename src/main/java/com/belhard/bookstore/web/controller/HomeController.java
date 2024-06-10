@@ -1,4 +1,4 @@
-package com.belhard.bookstore.controller;
+package com.belhard.bookstore.web.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
