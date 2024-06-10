@@ -10,6 +10,7 @@ import com.belhard.bookstore.service.UserService;
 import com.belhard.bookstore.service.dto.UserDto;
 import com.belhard.bookstore.service.dto.UserDtoLogin;
 import com.belhard.bookstore.service.dto.UserDtoWithoutPassword;
+import com.belhard.bookstore.service.exception.WrongLogginException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -223,18 +224,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDtoLogin login(String login, String password) {
+    public UserDtoWithoutPassword login(String login, String password) {
         log.debug("Calling login");
 
         User user = userRepository.findByLogin(login);
 
         if (user == null) {
-            throw new NoValidException("No login!");
+            throw new WrongLogginException("No login!");
         }
         if (!password.equals(user.getPassword())) {
-            throw new NoValidException("No login!");
+            throw new WrongLogginException("No login!");
         }
-        return toDtoLogin(user);
+        return toDtoWithoutPassport(user);
     }
 
     @Override

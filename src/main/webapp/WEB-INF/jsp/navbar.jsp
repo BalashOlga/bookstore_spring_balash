@@ -7,4 +7,6 @@
     <li><a href="/users/all">All Users</a></li>
     <li><a href="/users/create">Create User</a></li>
     <li><a href="/orders/all">All Orders</a></li>
+    <li><a href="/login">LogIn</a></li>
+    <li><a href="/logout">LogOut</a></li>
 </ul>

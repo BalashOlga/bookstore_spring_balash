@@ -1,9 +1,6 @@
 package com.belhard.bookstore.controller;
 
-import com.belhard.bookstore.service.exception.AppException;
-import com.belhard.bookstore.service.exception.NoEditException;
-import com.belhard.bookstore.service.exception.NoValidException;
-import com.belhard.bookstore.service.exception.NotFoundException;
+import com.belhard.bookstore.service.exception.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
@@ -53,6 +50,14 @@ public class ErrorHandler {
         log.debug(e.getMessage());
         model.addAttribute("message", e.getMessage());
         return "errorPage";
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public String appError(WrongLogginException e, Model model) {
+        log.debug(e.getMessage());
+        model.addAttribute("message", e.getMessage());
+        return "loginFormError";
     }
 
 }
