@@ -34,8 +34,13 @@
                         <th><a href="/books/edit/${book.id}">Edit book</a></th>
                         <th><a href="/books/delete/${book.id}">Delete book</a></th>
                       <th>
-                      <form action="/cart/book/${book.id}" method="post">
+                      <form action="/cart/add/${book.id}" method="post">
                           <button type="submit"> + </button>
+                      </form>
+                      </th>
+                      <th>
+                      <form action="/cart/remove/${book.id}" method="post">
+                        <button type="submit"> - </button>
                       </form>
                       </th>
                     </tr>

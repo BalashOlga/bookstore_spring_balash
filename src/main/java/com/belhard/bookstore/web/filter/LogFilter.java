@@ -10,17 +10,11 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.IOException;
 
 @Slf4j
-public class LoginFilter extends HttpFilter {
+public class LogFilter extends HttpFilter {
+
     @Override
     public void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
-        log.debug(" LoginFilter " + req.getRequestURI() + "  " + req.getMethod());
-
-        Object user = req.getSession().getAttribute("user");
-
-        if (user == null ) {
-            res.sendRedirect("/login");
-        } else {
-            chain.doFilter(req,res);
-        }
+        log.debug(" LogFilter " + req.getRequestURI() + "  " + req.getMethod());
+        chain.doFilter(req,res);
     }
 }

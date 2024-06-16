@@ -12,7 +12,7 @@
     <body>
         <jsp:include page="../navbar.jsp"/>
         <c:if test="${order != null}">
-            <h1>OrderItems By Order №${order.id}  Info (user name ${order.user.login})</h1>
+            <h5>OrderItems By Order №${order.id}  Info (user name ${order.user.login})</h5>
             <table>
                 <tr>
                     <th>#</th>
@@ -21,17 +21,17 @@
                     <th>Cover</th>
                     <th>Quantity</th>
                     <th>Price</th>
-                    <th>Action</th>
+                    <th>Status</th>
                 </tr>
-
                 <c:forEach items="${order.items}" var="item" varStatus="counter">
                     <tr>
                         <th>${counter.count}</th>
                         <th>${item.book.author}</th>
-                        <th>${item.book.isbn}</th>
+                        <th><a href="/books/isbn/${item.book.isbn}">${item.book.isbn}</a></th>
                         <th>${item.book.coverType.name()}</th>
                         <th>${item.quantity}</th>
-                        <th>${item.book.cost}</th>
+                        <th>${item.price}</th>
+                        <th>${order.status.name()}</th>
                     </tr>
                 </c:forEach>
             </table>

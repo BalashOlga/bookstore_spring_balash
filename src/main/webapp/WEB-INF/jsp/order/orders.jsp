@@ -18,6 +18,7 @@
                     <th>#</th>
                     <th>Id</th>
                     <th>Cost</th>
+                    <th>Status</th>
                     <th>Action</th>
                 </tr>
 
@@ -26,6 +27,7 @@
                         <th>${counter.count}</th>
                         <th>${order.id}</th>
                         <th>${order.cost}</th>
+                        <th>${order.status.name()}</th>
                         <th><a href="/orders/${order.id}">Orders info</a></th>
                     </tr>
                 </c:forEach>

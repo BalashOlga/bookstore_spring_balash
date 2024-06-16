@@ -23,6 +23,13 @@ public class BookController {
         return "book/book";
     }
 
+    @GetMapping("/isbn/{isbn}")
+    public String getBook(@PathVariable String isbn, Model model) {
+        BookDto book = service.getByIsbn(isbn);
+        model.addAttribute("book", book);
+        return "book/book";
+    }
+
     @GetMapping("/all")
     public String getBooks(Model model) {
         List<BookDto> books = service.getAll();

@@ -23,7 +23,7 @@
                 <c:forEach items="${sessionScope.cart}" var="item" varStatus="counter">
                     <tr>
                         <th>${counter.count}</th>
-                        <th>${item.key}</th>
+                        <th><a href="/books/${item.key}">${item.key}</a></th>
                         <th>${item.value}</th>
                     </tr>
                 </c:forEach>

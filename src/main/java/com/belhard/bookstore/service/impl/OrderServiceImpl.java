@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -56,8 +57,6 @@ public class OrderServiceImpl implements OrderService {
         order.setStatus(orderDto.getStatus());
         return order;
     }
-
-
 
     @Override
     @Transactional
@@ -115,6 +114,7 @@ public class OrderServiceImpl implements OrderService {
             orderItem.setBook(book);
             Integer quantity = entry.getValue();
             orderItem.setQuantity(quantity);
+            orderItem.setPrice(book.getCost().multiply(BigDecimal.valueOf(quantity)));
             items.add(orderItem);
         }
 
