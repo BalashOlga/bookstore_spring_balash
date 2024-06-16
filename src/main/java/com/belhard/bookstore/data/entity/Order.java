@@ -15,12 +15,12 @@ public class Order {
     @Column(name = "id")
     private Long id;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST,
+    @ManyToOne(cascade = {/*CascadeType.ALL, CascadeType.PERSIST,*/
             CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = {/*CascadeType.ALL*/ CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
     @JoinColumn(name = "order_id")
     private List<OrderItem> items;
 

@@ -10,30 +10,34 @@
     </head>
 
     <body>
-        <jsp:include page="../navbar.jsp"/>
-        <c:if test="${orders.size() > 0}">
-            <h1>All Orders</h1>
+        <jsp:include page="navbar.jsp"/>
+        <c:if test="${sessionScope.cart.size() > 0}">
+            <h1>Your Cart</h1>
             <table>
                 <tr>
-                    <th>#</th>
-                    <th>Id</th>
-                    <th>Cost</th>
-                    <th>Action</th>
+                <th>#</th>
+                <th>bookId</th>
+                <th>Quantity</th>
                 </tr>
 
-                <c:forEach items="${orders}" var="order" varStatus="counter">
+                <c:forEach items="${sessionScope.cart}" var="item" varStatus="counter">
                     <tr>
                         <th>${counter.count}</th>
-                        <th>${order.id}</th>
-                        <th>${order.cost}</th>
-                        <th><a href="/orders/${order.id}">Orders info</a></th>
+                        <th>${item.key}</th>
+                        <th>${item.value}</th>
                     </tr>
                 </c:forEach>
+                <th>
+                  <form action="/orders" method="post">
+                      <button type="submit"> Set the order </button>
+                  </form>
+                </th>
             </table>
         </c:if>
 
-        <c:if test="${orders.size() == 0}">
-            <h1>No orders yet</h1>
+
+        <c:if test="${sessionScope.cart.size() == 0}">
+            <h1>The cart is empty</h1>
         </c:if>
     </body>
 </html>

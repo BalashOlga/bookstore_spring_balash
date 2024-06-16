@@ -47,7 +47,7 @@ public class AppConfiguration extends WebMvcConfigurationSupport {
     @Override
     protected void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(firstInterceptor).order(1).addPathPatterns("/**");
-        registry.addInterceptor(secondInterceptor).order(10).addPathPatterns("/orders/user/**");
+        registry.addInterceptor(secondInterceptor).order(10).addPathPatterns("/orders/user/{userId}");
     }
 
     @Bean

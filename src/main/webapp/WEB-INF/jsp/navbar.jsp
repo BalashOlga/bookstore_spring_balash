@@ -13,6 +13,7 @@
         <li><a href="/users/all">All Users</a></li>
         <li><a href="/orders/all">All Orders</a></li>
         <li><a href="/users/${sessionScope.user.id}/orders">My orders</a></li>
+         <li><a href="/cart">My cart</a></li>
         <li><a href="/logout">LogOut</a></li>
         <h3>${sessionScope.user.login} </h1>
       </c:if>

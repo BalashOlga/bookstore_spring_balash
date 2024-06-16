@@ -5,6 +5,7 @@
         <meta charset="UTF-8" />
         <title><%=request.getServletContext().getServerInfo() %></title>
         <link href="/css/bookstore.css" rel="stylesheet" type="text/css" />
+        <link rel="icon" href="data:,">
     </head>
 
     <body>

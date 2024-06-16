@@ -6,6 +6,7 @@
         <meta charset="UTF-8" />
         <title><%=request.getServletContext().getServerInfo() %></title>
         <link href="/css/bookstore.css" rel="stylesheet" type="text/css" />
+        <link rel="icon" href="data:,">
     </head>
 
     <body>
@@ -32,6 +33,11 @@
                         <th><a href="/books/${book.id}">Books info</a></th>
                         <th><a href="/books/edit/${book.id}">Edit book</a></th>
                         <th><a href="/books/delete/${book.id}">Delete book</a></th>
+                      <th>
+                      <form action="/cart/book/${book.id}" method="post">
+                          <button type="submit"> + </button>
+                      </form>
+                      </th>
                     </tr>
                 </c:forEach>
             </table>

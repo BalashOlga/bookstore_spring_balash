@@ -1,18 +1,18 @@
 package com.belhard.bookstore.web.controller;
 
+import com.belhard.bookstore.data.entity.Order;
+import com.belhard.bookstore.data.entity.User;
 import com.belhard.bookstore.service.OrderService;
-import com.belhard.bookstore.service.dto.BookDto;
-import com.belhard.bookstore.service.dto.OrderDto;
-import com.belhard.bookstore.service.dto.OrderDtoLazy;
+import com.belhard.bookstore.service.dto.*;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -36,10 +36,19 @@ public class OrderController {
     }
 
     @GetMapping("/user/{userId}")
-    public String getByUser(@PathVariable Long userId, Model model) {
-        List<OrderDto> orders = service.getByUserId(userId);
+    public String getByUser(@SessionAttribute UserDtoWithoutPassword user, Model model) {
+        List<OrderDto> orders = service.getByUserId(user.getId());
         model.addAttribute("orders", orders);
         return "order/orders";
     }
 
+    @PostMapping
+    public String createOrder(@SessionAttribute UserDtoWithoutPassword user, HttpSession session,@SessionAttribute Map<Long, Integer> cart) {
+        OrderCreateDto orderCreateDto = new OrderCreateDto(user, (Map<Long, Integer>)session.getAttribute("cart"));
+        OrderDto order = service.create(orderCreateDto);
+        cart.clear();
+        session.setAttribute("cart", cart);
+
+        return "redirect:/orders/" + order.getId();
+    }
 }

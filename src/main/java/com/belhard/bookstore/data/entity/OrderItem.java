@@ -14,8 +14,8 @@ public class OrderItem {
     @Column(name = "id")
     private Long id;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST,
-            CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToOne(cascade = {/*CascadeType.PERSIST,*/
+            CascadeType.MERGE/*, CascadeType.REFRESH*/})
     @JoinColumn(name = "book_id")
     private Book book;
 
@@ -24,4 +24,7 @@ public class OrderItem {
 
     @Column(name = "price")
     private BigDecimal price;
+
+    @Column(name = "deleted", nullable = false)
+    private Boolean deleted = false;
 }
