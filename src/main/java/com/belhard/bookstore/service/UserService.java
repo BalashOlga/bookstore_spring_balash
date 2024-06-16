@@ -27,5 +27,5 @@ public interface UserService {
 
     String getPassword(long id);
 
-    UserDtoLogin login(String login, String password);
+    UserDtoWithoutPassword login(String login, String password);
 }

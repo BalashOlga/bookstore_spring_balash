@@ -1,7 +1,6 @@
 package com.belhard.bookstore.data.repository.Impl;
 
 import com.belhard.bookstore.data.entity.Book;
-import com.belhard.bookstore.data.entity.User;
 import com.belhard.bookstore.data.repository.BookRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
@@ -33,6 +32,7 @@ public class BookRepositoryImpl implements BookRepository {
                     .setParameter("id", id)
                     .getSingleResult();
         } catch (NoResultException e) {
+
             return null;
         }
     }

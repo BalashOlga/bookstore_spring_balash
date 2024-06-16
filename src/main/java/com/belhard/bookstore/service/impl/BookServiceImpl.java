@@ -1,6 +1,8 @@
 package com.belhard.bookstore.service.impl;
 
-import com.belhard.bookstore.controller.NotFoundException;
+import com.belhard.bookstore.service.exception.NoEditException;
+import com.belhard.bookstore.service.exception.NoValidException;
+import com.belhard.bookstore.service.exception.NotFoundException;
 import com.belhard.bookstore.data.entity.Book;
 import com.belhard.bookstore.data.entity.CoverType;
 import com.belhard.bookstore.data.repository.BookRepository;
@@ -112,13 +114,13 @@ public class BookServiceImpl implements BookService {
         Book byIsbn = bookRepository.findByIsbn(isbnToBeCreate);
 
         if (byIsbn != null) {
-            throw new NotFoundException("No valid isbn" + bookDto.getIsbn() + "! Book is not created!");
+            throw new NoValidException("No valid isbn" + bookDto.getIsbn() + "! Book is not created!");
         }
 
         Book book = bookRepository.save(toBook(bookDto));
 
         if (book == null){
-            throw new NotFoundException("Book is not create!");
+            throw new NoEditException("Book is not create!");
         } else {
             return toDto(book);
         }
@@ -132,27 +134,14 @@ public class BookServiceImpl implements BookService {
         Book byIsbn = bookRepository.findByIsbn(isbnToBeUpdated);
 
         if (byIsbn != null && !byIsbn.getId().equals(bookDto.getId())) {
-            throw new NotFoundException("No valid isbn" + bookDto.getIsbn() + "! Book  is not updated!");
+            throw new NoValidException("No valid isbn" + bookDto.getIsbn() + "! Book  is not updated!");
         }
-
-        if (bookDto.getAuthor() == null) {
-            bookDto.setAuthor(byIsbn.getAuthor());
-        }
-        if (bookDto.getYear() == null) {
-            bookDto.setYear(byIsbn.getYear());
-        }
-
-        if (bookDto.getCost() == null) {
-            bookDto.setCost(byIsbn.getCost());
-        }
-
         if (bookDto.getCoverType() == null) {
             bookDto.setCoverType(byIsbn.getCoverType());
         }
-
         Book book = bookRepository.save(toBook(bookDto));
         if (book == null){
-            throw new NotFoundException("Book is not update!");
+            throw new NoEditException("Book is not update!");
         } else {
             return toDto(book);
         }
@@ -163,7 +152,7 @@ public class BookServiceImpl implements BookService {
         log.debug("Calling delete");
 
         if (!bookRepository.delete(id)) {
-            throw new NotFoundException("Deletion error by id = " + id + "!" );
+            throw new NoEditException("Deletion error by id = " + id + "!" );
         }
     }
 

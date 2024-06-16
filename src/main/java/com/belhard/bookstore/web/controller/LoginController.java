@@ -1,0 +1,43 @@
+package com.belhard.bookstore.web.controller;
+
+import com.belhard.bookstore.data.entity.User;
+import com.belhard.bookstore.service.UserService;
+import com.belhard.bookstore.service.dto.UserDtoWithoutPassword;
+import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.HashMap;
+import java.util.Map;
+
+@Controller
+@RequiredArgsConstructor
+public class LoginController {
+    private final UserService service;
+
+    @GetMapping("/login")
+    public String loginForm() {
+        return "loginForm";
+    }
+
+    @PostMapping("/login")
+    public String login(@RequestParam String login, @RequestParam String password, HttpSession session) {
+        UserDtoWithoutPassword user = service.login(login, password);
+        session.setAttribute("user", user);
+        if (session.getAttribute("cart") == null) {
+            Map <Long, Integer> cart = new HashMap<>();
+            session.setAttribute("cart", cart);
+            }
+        return "redirect:/home";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/home";
+    }
+}
+

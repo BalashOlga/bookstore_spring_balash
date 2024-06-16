@@ -1,28 +1,34 @@
 package com.belhard.bookstore.service.impl;
 
-import com.belhard.bookstore.controller.NotFoundException;
-import com.belhard.bookstore.data.entity.Order;
+import com.belhard.bookstore.data.entity.*;
+import com.belhard.bookstore.data.repository.BookRepository;
 import com.belhard.bookstore.data.repository.OrderRepository;
+import com.belhard.bookstore.data.repository.UserRepository;
 import com.belhard.bookstore.service.OrderService;
+import com.belhard.bookstore.service.dto.OrderCreateDto;
 import com.belhard.bookstore.service.dto.OrderDto;
 import com.belhard.bookstore.service.dto.OrderDtoLazy;
+import com.belhard.bookstore.service.exception.NotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
 @Service
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
+    private final BookRepository bookRepository;
+    private final UserRepository userRepository;
 
     private OrderDto toDto(Order order) {
         OrderDto orderDto = new OrderDto();
-        order.getItems().size();
-
         orderDto.setId(order.getId());
         orderDto.setUser(order.getUser());
         orderDto.setItems(order.getItems());
@@ -67,6 +73,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public List<OrderDto> getByUserId(long id) {
         log.debug("Calling getByUser");
 
@@ -80,7 +87,6 @@ public class OrderServiceImpl implements OrderService {
                     .toList();
         }
     }
-
 
     @Override
     public List<OrderDtoLazy> getAll() {
@@ -96,5 +102,30 @@ public class OrderServiceImpl implements OrderService {
                     .toList();
         }
     }
+
+    @Override
+    public OrderDto create(OrderCreateDto orderCreateDto) {
+        List<OrderItem> items = new ArrayList<>();
+        Map<Long, Integer> cart = orderCreateDto.getCart();
+        for (Map.Entry<Long, Integer> entry : cart.entrySet()) {
+            OrderItem orderItem = new OrderItem();
+            Long bookId = entry.getKey();
+            Book book = bookRepository.findById(bookId);
+            orderItem.setBook(book);
+            Integer quantity = entry.getValue();
+            orderItem.setQuantity(quantity);
+            orderItem.setPrice(book.getCost().multiply(BigDecimal.valueOf(quantity)));
+            items.add(orderItem);
+        }
+
+        Order order = new Order();
+        User user = userRepository.findById(orderCreateDto.getUser().getId());
+        order.setUser(user);
+        order.setItems(items);
+        order.setStatus(OrderStatus.valueOf("ISSUED"));
+
+        return toDto(orderRepository.save(order));
+    }
+
 }
 
