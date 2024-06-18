@@ -1,9 +1,14 @@
 #Maven
 target/
+\!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
 
 #Project specific files
 *.~*
+*.cmd
 log/
+HELP.md
 
 ### IntelliJ IDEA ###
 .idea/
@@ -12,6 +17,10 @@ out/
 **/src/test/**/out/
 .idea
 *.iml
+*.iws
+*.iml
+*.ipr
+
 
 ### Eclipse ###
 .apt_generated
@@ -31,6 +40,9 @@ bin/
 /dist/
 /nbdist/
 /.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
 
 ### VS Code ###
 .vscode/

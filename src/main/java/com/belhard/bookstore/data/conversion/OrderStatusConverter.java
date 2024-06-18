@@ -1,7 +1,6 @@
 package com.belhard.bookstore.data.conversion;
 
 import com.belhard.bookstore.data.entity.OrderStatus;
-import com.belhard.bookstore.data.entity.Role;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 
