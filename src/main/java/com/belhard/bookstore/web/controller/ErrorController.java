@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class ErrorController {
-    @RequestMapping("/error")
+    @RequestMapping("/errorrrrrrrrrrrrrrrrr")
     public String handleError (HttpServletRequest request, Model model) {
         model.addAttribute("status", request.getAttribute("javax.servlet.error.status_code"));
         model.addAttribute("reason", request.getAttribute("javax.servlet.error.status_code"));
